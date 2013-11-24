@@ -5,7 +5,6 @@
 /* TODO: property groups */
 /* should this be a field in the location structure? */
 
-/* TODO: rents, price for houses, price for hotels, mortgage price */
 Location_t locations[NUM_LOC] =
 {
   /* abbreviation key
@@ -23,47 +22,47 @@ ownership:
    H = hotel
   */
   /*                                       |--prices--|  |---rent----|  |-owernship-|       */
-  /* name                    type          p    h  H  m   0 1 2 3 4 H    o  m  h  H   owner */
-    {"GO",                   GO_T,         0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Mediterranean Avenue", PROPERTY_T,   60,  0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Community Chest",      CHEST_T,      0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Baltic Avenue",        PROPERTY_T,   60,  0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Income Tax",           INCOME_TAX_T, 0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Reading Railroad",     PROPERTY_T,   200, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Oriental Avenue",      PROPERTY_T,   100, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Chance",               CHANCE_T,     0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Vermont Avenue",       PROPERTY_T,   100, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Connecticut Avenue",   PROPERTY_T,   120, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Jail",                 JAIL_T,       0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"St. Charles Place",    PROPERTY_T,   140, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Electric Company",     PROPERTY_T,   150, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"States Avenue",        PROPERTY_T,   140, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Virginia Avenue",      PROPERTY_T,   160, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Pennsylvania Railroad",PROPERTY_T,   200, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"St. James Place",      PROPERTY_T,   180, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Community Chest",      CHEST_T,      0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Tennessee Avenue",     PROPERTY_T,   180, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"New York Avenue",      PROPERTY_T,   200, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Free Parking",         PARKING_T,    0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Kentucky Avenue",      PROPERTY_T,   220, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Chance",               CHANCE_T,     0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Indiana Avenue",       PROPERTY_T,   220, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Illinois Avenue",      PROPERTY_T,   240, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"B.&O. Railroad",       PROPERTY_T,   200, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Atlantic Avenue",      PROPERTY_T,   260, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Ventnor Avenue",       PROPERTY_T,   260, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Water Works",          PROPERTY_T,   150, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Marvin Gardens",       PROPERTY_T,   280, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"GO TO JAIL",           GO_TO_JAIL_T, 0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Pacific Avenue",       PROPERTY_T,   300, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"North Carolina Avenue",PROPERTY_T,   300, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Community Chest",      CHEST_T,      0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Pennsylvania Avenue",  PROPERTY_T,   320, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Short Line",           PROPERTY_T,   200, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Chance",               CHANCE_T,     0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Park Place",           PROPERTY_T,   350, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Luxury Tax",           LUXURY_TAX_T, 0,   0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL},
-    {"Boardwalk",            PROPERTY_T,   400, 0, 0, 0, {0,0,0,0,0,0}, {0, 0, 0, 0}, NULL}
+  /* name                    type           p     h    H   m    0   1   2    3    4    H    o  m  h  H   owner */
+    {"GO",                   GO_T,          0,    0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Mediterranean Avenue", PROPERTY_T,   60,   50,  50, 30, { 2, 10, 30,  90, 160, 250}, {0, 0, 0, 0}, NULL},
+    {"Community Chest",      CHEST_T,       0,    0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Baltic Avenue",        PROPERTY_T,   60,   50,  50, 30, { 4, 20, 60, 180, 320, 450}, {0, 0, 0, 0}, NULL},
+    {"Income Tax",           INCOME_TAX_T,  0,    0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Reading Railroad",     PROPERTY_T,   200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Oriental Avenue",      PROPERTY_T,   100,  50,  50, 50, { 6, 30, 90, 270, 400, 550}, {0, 0, 0, 0}, NULL},
+    {"Chance",               CHANCE_T,     0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Vermont Avenue",       PROPERTY_T,   100,  50,  50, 50, { 6, 30, 90, 270, 400, 550}, {0, 0, 0, 0}, NULL},
+    {"Connecticut Avenue",   PROPERTY_T,   120,  50,  50, 60, { 8, 40,100, 300, 450, 600}, {0, 0, 0, 0}, NULL},
+    {"Jail",                 JAIL_T,       0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"St. Charles Place",    PROPERTY_T,   140, 100, 100, 70, {10, 50,150, 450, 625, 750}, {0, 0, 0, 0}, NULL},
+    {"Electric Company",     PROPERTY_T,   150,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"States Avenue",        PROPERTY_T,   140, 100, 100, 70, {10, 50,150, 450, 625, 750}, {0, 0, 0, 0}, NULL},
+    {"Virginia Avenue",      PROPERTY_T,   160, 100, 100, 80, {12, 60,180, 500, 700, 900}, {0, 0, 0, 0}, NULL},
+    {"Pennsylvania Railroad",PROPERTY_T,   200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"St. James Place",      PROPERTY_T,   180, 100, 100, 90, {14, 70,200, 550, 750, 950}, {0, 0, 0, 0}, NULL},
+    {"Community Chest",      CHEST_T,      0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Tennessee Avenue",     PROPERTY_T,   180, 100, 100, 90, {14, 70,200, 550, 750, 950}, {0, 0, 0, 0}, NULL},
+    {"New York Avenue",      PROPERTY_T,   200, 100, 100,100, {16, 80,220, 600, 800,1000}, {0, 0, 0, 0}, NULL},
+    {"Free Parking",         PARKING_T,    0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Kentucky Avenue",      PROPERTY_T,   220, 150, 150,110, {18, 90,250, 700, 875,1050}, {0, 0, 0, 0}, NULL},
+    {"Chance",               CHANCE_T,     0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Indiana Avenue",       PROPERTY_T,   220, 150, 150,110, {18, 90,250, 700, 875,1050}, {0, 0, 0, 0}, NULL},
+    {"Illinois Avenue",      PROPERTY_T,   240, 150, 150,120, {20,100,400, 750, 925,1100}, {0, 0, 0, 0}, NULL},
+    {"B.&O. Railroad",       PROPERTY_T,   200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Atlantic Avenue",      PROPERTY_T,   260, 150, 150,130, {22,110,330, 800, 975,1150}, {0, 0, 0, 0}, NULL},
+    {"Ventnor Avenue",       PROPERTY_T,   260, 150, 150,130, {22,110,330, 800, 975,1150}, {0, 0, 0, 0}, NULL},
+    {"Water Works",          PROPERTY_T,   150,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Marvin Gardens",       PROPERTY_T,   280, 150, 150,140, {24,120,360, 850,1025,1150}, {0, 0, 0, 0}, NULL},
+    {"GO TO JAIL",           GO_TO_JAIL_T, 0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Pacific Avenue",       PROPERTY_T,   300, 200, 200,150, {26,130,390, 900,1100,1275}, {0, 0, 0, 0}, NULL},
+    {"North Carolina Avenue",PROPERTY_T,   300, 200, 200,150, {26,130,390, 900,1100,1275}, {0, 0, 0, 0}, NULL},
+    {"Community Chest",      CHEST_T,      0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Pennsylvania Avenue",  PROPERTY_T,   320, 200, 200,160, {28,150,450,1000,1200,1400}, {0, 0, 0, 0}, NULL},
+    {"Short Line",           PROPERTY_T,   200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Chance",               CHANCE_T,     0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Park Place",           PROPERTY_T,   350, 200, 200,175, {35,175,500,1100,1300,1500}, {0, 0, 0, 0}, NULL},
+    {"Luxury Tax",           LUXURY_TAX_T, 0,     0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Boardwalk",            PROPERTY_T,   400, 200, 200,200, {50,200,600,1400,1700,2000}, {0, 0, 0, 0}, NULL},
 };
 
 void chomp(char * s) {
@@ -86,11 +85,21 @@ void init_game(Game_state_t * gs_p) {
     gs_p->game_over = 0;
 
     /* prompt for number of players */
-    printf("how many players?\n");
-    fgets(buffer,MAXCHARS,stdin);
-    num_players = atoi(buffer); // TODO: handle edge cases
+    do {
+        printf("how many players?\n");
+        fgets(buffer,MAXCHARS,stdin);
+        num_players = atoi(buffer);
+    } while(num_players < 2 || num_players > 4);
+
     gs_p->num_players = num_players;
     gs_p->players = malloc(sizeof(Player_t)*num_players); /* create players */
+
+    // TODO: remove this stuff
+/*    Player_t * master = &(gs_p->players[0]);
+    for(i=0; i < NUM_LOC; i++) {
+        locations[i].owner = master;
+        locations[i].ownership.owned = 1;
+    } */
 
     /* init each player */
     for(i=0; i < num_players; i++) {
@@ -115,9 +124,11 @@ void init_game(Game_state_t * gs_p) {
         p_p->piece_type = 0; // TODO
 
         p_p->cash = 1500;
+//        p_p->cash = 10; // TODO: CHANGE BACK
         p_p->location_index = GO_L;
         p_p->in_jail = 0;
         p_p->roll_double_count = 0;
+        p_p->rent_left_to_pay = 0;
         for(j=0; j<NUM_LOC; j++) {
             p_p->property[j].own = 0;
             p_p->property[j].num_houses = 0;
@@ -232,6 +243,11 @@ int calculate_rent(Game_state_t * gs_p, Location_t * l_p) {
         rent_index = HOTEL;
 
     int rent = l_p->rent[rent_index];
+
+    int monopoly = 0; // TODO
+    if(monopoly && num_houses == 0) {
+        rent *= 2;
+    }
 }
 
 void charge_rent(Game_state_t * gs_p, Player_t * p_p, Location_t * l_p) {
@@ -239,10 +255,19 @@ void charge_rent(Game_state_t * gs_p, Player_t * p_p, Location_t * l_p) {
     int rent = calculate_rent(gs_p, l_p);
     printf("rent is: $%d\n",rent);
 
-    // TODO: see if player has enough money
-    //       otherwise, allow them to mortgage or trade
-    if(1) {
-        credit_or_debit_player(gs_p, p_p, rent);
+    Player_t * owner = l_p->owner;
+
+    int sufficient_funds = (p_p->cash >= rent);
+    if(sufficient_funds) {
+        credit_or_debit_player(gs_p, p_p, -1*rent);
+        credit_or_debit_player(gs_p, owner, rent);
+        p_p->rent_left_to_pay = 0;
+    }
+    else {
+        // TODO: see if player has enough money
+        //       otherwise, allow them to mortgage or trade
+        printf("you have insufficient funds; you may raise money by offering a trade or by selling or mortgaging property\n");
+        p_p->rent_left_to_pay = rent;
     }
 
 }
@@ -251,32 +276,18 @@ void land_on_property_action(Game_state_t * gs_p, Player_t * p_p, int l_i) {
     Location_t * l_p = &(locations[l_i]);
 
     int owned = l_p->ownership.owned;
-    /* if unowned, see if player has enough money to buy it */
-    if(!owned) {
-        int choice;
-        int price = l_p->price;
-        printf("property is unowned; the price is $%d would you like to buy it?\n", price);
-        choice = getchar(); // TODO: use fgets; user could type too many chars
-        if(choice == 'y') {
-            p_p->property[l_i].own = 1;
-            credit_or_debit_player(gs_p, p_p, -1*price);
-            l_p->ownership.owned = 1;
-            l_p->owner = p_p;
-        }
-        else {
-            // TODO: auction
-        }
-    }
-    /* if owned, charge appropriate rent */
-    else {
+    if(owned) {
         Player_t * owner = l_p->owner;
         int owned_by_another = (owner == p_p) ? 0 : 1;
-        if(owned_by_another) { // TODO: owned by another player
+        if(owned_by_another) {
             printf("property is owned by another player\n");
             charge_rent(gs_p, p_p, l_p);
         }
         else
             printf("you own this property\n");
+    }
+    else {
+        printf("you have landed on an unowned property. you must buy it or it will be auctioned.\n");
     }
 
 }
@@ -334,62 +345,264 @@ void do_location_action(Game_state_t * gs_p) {
 
 }
 
-    /* function summary:
-           handle "in jail" case
-           roll dice, handle going to jail for 3 doubles
-           advance token
-           do location action
-           advance turn
-    */
+/* function summary:
+       handle "in jail" case
+       roll dice, handle going to jail for 3 doubles
+       advance token
+       do location action
+       advance turn
+*/
+
+#define TRADE        0
+#define MANAGE       1
+#define ROLL         2
+#define BUY          3
+#define AUCTION      4
+#define RENT         5
+#define END          6
+#define JAIL_ROLL    7
+#define BAIL         8
+#define GET_OUT_FREE 9
+
+#define NUM_ACTION_STRINGS  10
+int actions_allowed[NUM_ACTION_STRINGS];
+char action_strings[][40] = {
+    "Offer trade",
+    "Manage property",
+    "Roll dice",
+    "Buy property",
+    "Start auction",
+    "Pay rent",
+    "End turn",
+    "Roll to get out of jail",
+    "Pay to get out of jail",
+    "Use get-out-of-jail-free card"
+};
+
 void game_iter(Game_state_t * gs_p) {
 
     int turn = gs_p->turn;
     Player_t * p_p = &(gs_p->players[turn]);
 
     int in_jail = p_p->in_jail;
+    int end_of_turn = 0;
+    int has_rolled = 0;
+    int landed_on_unowned = 0;
 
-    if(in_jail) {
-        char buffer[MAXCHARS];
+    int doubles;
 
-        printf("player is in jail\n");
-        printf("You may:\n");
-        printf("1. choose to pay $50\n");
-        printf("2. roll for doubles\n");
-        int player_has_free_card = 0;
-        if(player_has_free_card) {
-            printf("3. use your get out of jail free card\n");
+    char buffer[MAXCHARS];
+
+    /* let the player choose what to do */
+
+    while(!end_of_turn) {
+
+        if(in_jail) {
+            actions_allowed[TRADE]          = 1;
+            actions_allowed[MANAGE]         = 1;
+            actions_allowed[ROLL]           = 0;
+            actions_allowed[BUY]            = 0;
+            actions_allowed[AUCTION]        = 0;
+            actions_allowed[RENT]           = 0;
+            actions_allowed[END]            = has_rolled ? 1 : 0;
+            actions_allowed[JAIL_ROLL]      = has_rolled ? 0 : 1;
+            actions_allowed[BAIL]           = has_rolled ? 0 : 1;
+            actions_allowed[GET_OUT_FREE]   = has_rolled ? 0 : 1;
         }
-        fgets(buffer, MAXCHARS, stdin);
-        int choice = atoi(buffer);
-        //TODO
+        else {
+            actions_allowed[TRADE]          = 1;
+            actions_allowed[MANAGE]         = 1;
+            actions_allowed[ROLL]           = has_rolled ? 0 : 1;
+            actions_allowed[BUY]            = landed_on_unowned ? 1 : 0;
+            actions_allowed[AUCTION]        = landed_on_unowned ? 1 : 0;
+            actions_allowed[RENT]           = p_p->rent_left_to_pay > 0 ? 1 : 0;
+            actions_allowed[END]            = (has_rolled && !landed_on_unowned && p_p->rent_left_to_pay == 0) ? 1 : 0;
+            actions_allowed[JAIL_ROLL]      = 0;
+            actions_allowed[BAIL]           = 0;
+            actions_allowed[GET_OUT_FREE]   = 0;
+        }
+
+ask_for_choice:
+        printf("what would you like to do?\n");
+
+        int i;
+        for(i=0; i < NUM_ACTION_STRINGS; i++) {
+            if(actions_allowed[i])
+                printf("%d. %s\n",i,action_strings[i]);
+        }
+
+        int choice;
+        fgets(buffer,MAXCHARS,stdin);
+        choice = atoi(buffer);
+
+        if(choice < 0 || choice > NUM_ACTION_STRINGS || !actions_allowed[choice]) {
+            printf("invalid choice\n");
+            goto ask_for_choice;
+        }
+
+        int die1, die2;
+
+        int l_i = p_p->location_index;
+        Location_t * l_p = &(locations[l_i]);
+        int price = l_p->price;
+
         switch(choice) {
-            case 1:
+            case TRADE:
+                offer_trade();
+                break;
+            case MANAGE: // TODO
+                /* mortgage or unmortgage an owned property */
+                /* buy or sell houses/hotels */
+                break;
+            case ROLL:
+                do_roll(gs_p,&doubles,&landed_on_unowned);
+                has_rolled = 1;
+                break;
+            case BUY:
+                /* TODO: handle insufficient funds */
+                p_p->property[l_i].own = 1;
+                credit_or_debit_player(gs_p, p_p, -1*price);
+                l_p->ownership.owned = 1;
+                l_p->owner = p_p;
+                landed_on_unowned = 0;
+                break;
+            case AUCTION:
+                do_auction(gs_p);
+                landed_on_unowned = 0;
+                break;
+            case RENT:
+                charge_rent(gs_p, p_p, l_p);
+                break;
+            case END:
+                end_of_turn = 1;
+                break;
+            case JAIL_ROLL:
+                roll_dice(&die1, &die2);
+                doubles = (die1 == die2);
+                if(doubles) {
+                    p_p->in_jail = 0;
+                }
+                has_rolled = 1;
+                break;
+            case BAIL:
                 credit_or_debit_player(gs_p, p_p, -50);
                 // TODO: allow player to roll now
                 p_p->in_jail = 0;
-                p_p->roll_double_count = 0;
-                p_p->rolls_in_jail = 0;
                 break;
-            case 2:
-                break;
-            case 3:
+            case GET_OUT_FREE:
                 p_p->in_jail = 0;
                 p_p->has_get_out_of_jail_free = 0;
                 break;
         }
 
-        goto end_turn;
     }
+
+end_turn:
+    printf("\n\n\n\n\n\n");
+    advance_turn(gs_p, doubles);
+}
+
+// TODO
+void manage_property(Game_state_t * gs_p) {
+    char buffer[MAXCHARS];
+    printf("what would you like to do?\n");
+    printf("1. buy houses or hotels\n");
+    printf("2. sells houses or hotels\n");
+    printf("3. mortgage property\n");
+    printf("4. unmortgage property\n");
+    fgets(buffer,MAXCHARS,stdin);
+    int choice = atoi(buffer);
+    switch(choice) {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+    }
+}
+
+void do_auction(Game_state_t * gs_p) {
+
+    int num_participants = gs_p->num_players;
+    int current_bid = 0;
+    char buffer[MAXCHARS];
+    int bidder = 0;
+
+    int * participants = (int *) malloc(sizeof(int)*gs_p->num_players);
+    int i;
+    for(i=0; i < gs_p->num_players; i++)
+        participants[i] = 1;
+
+    int highest_bidder = 0;
+
+    while(num_participants > 1) {
+
+        if(!participants[bidder])
+            continue;
+
+        int bid;
+        int choice;
+
+        char * bidder_name = gs_p->players[bidder].name;
+
+        printf("%s's turn to bid\n", bidder_name);
+
+        do {
+            printf("the current bid is %d. would you like to bid? ",current_bid);
+            fgets(buffer,MAXCHARS,stdin);
+            choice = buffer[0];
+        } while(buffer[0] != 'n' && buffer[0] != 'y');
+
+        if(choice != 'y') {
+            participants[bidder] = 0;
+            num_participants--;
+            continue;
+        }
+
+        printf("enter bid: ");
+        fgets(buffer,MAXCHARS,stdin);
+        bid = atoi(buffer);
+
+        if(bid > current_bid) {
+            current_bid = bid;
+            highest_bidder = bidder;
+            bidder = (bidder+1) % gs_p->num_players;
+        }
+        else
+            printf("you must bid more than %d\n",current_bid);
+    }
+
+    Player_t * highest_bidder_p = &(gs_p->players[highest_bidder]);
+
+    printf("sold! to %s for %d\n", highest_bidder_p->name, current_bid);
+
+    credit_or_debit_player(gs_p, highest_bidder_p, -1*current_bid);
+    
+}
+
+void enter_jail(Player_t * p_p) {
+    p_p->in_jail = 1;
+    p_p->rolls_in_jail = 0;
+    p_p->roll_double_count = 0;
+}
+
+void do_roll(Game_state_t * gs_p, int * doubles, int * landed_on_unowned) {
+
+    int turn = gs_p->turn;
+    Player_t * p_p = &(gs_p->players[turn]);
 
     /* roll dice */
     int die1, die2;
     roll_dice(&die1, &die2);
 
-    int doubles = (die1 == die2);
+    *doubles = (die1 == die2);
 
     printf("die 1: %d\ndie 2: %d\n",die1,die2);
 
-    if(doubles) {
+    if(*doubles) {
         printf("you rolled doubles\n");
         p_p->roll_double_count++;
     }
@@ -400,21 +613,32 @@ void game_iter(Game_state_t * gs_p) {
     /* if roll double count is 3, go to jail, end turn */
     if(p_p->roll_double_count == 3) {
         printf("you rolled doubles three times in a row. you go to jail.\n");
-        p_p->in_jail = 1;
-        p_p->rolls_in_jail = 0;
-        goto end_turn;
+        enter_jail(p_p);
+        return;
     }
 
     /* advance token; handles rolling doubles */
     advance_token(gs_p,die1,die2);
 
-    do_location_action(gs_p);
+    Location_t * l_p = &(locations[p_p->location_index]);
+    *landed_on_unowned = (l_p->location_type == PROPERTY_T) && (!l_p->ownership.owned);
 
-end_turn:
-    printf("press enter to advance turn\n");
-    getchar();
-    printf("\n\n\n\n\n\n");
-    advance_turn(gs_p, doubles);
+    do_location_action(gs_p);
+}
+
+// TODO
+void offer_trade() {
+
+    printf("to which player would you like to make an offer?\n");
+
+    printf("would you like to offer any cash?\n");
+
+        printf("enter amount:\n");
+
+    printf("would you like to offer any properties?\n");
+
+    printf("would you like to offer your get-out-of-jail-free card?\n");
+
 }
 
 void game_loop(Game_state_t * gs_p) {

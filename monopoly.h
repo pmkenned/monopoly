@@ -31,6 +31,7 @@ struct player_s {
     int in_jail;
     int rolls_in_jail;
     int has_get_out_of_jail_free;
+    int rent_left_to_pay;
 };
 
 typedef struct player_s Player_t;
@@ -86,6 +87,11 @@ struct game_state_s {
 typedef struct game_state_s Game_state_t;
 
 void init_game(Game_state_t * gs_p);
+void enter_jail(Player_t * p_p);
+void do_roll(Game_state_t * gs_p, int * doubles, int * landed_on_unowned);
+void offer_trade();
+void manage_property(Game_state_t * gs_p);
+void do_auction(Game_state_t * gs_p);
 void advance_turn(Game_state_t * gs_p, int doubles);
 void credit_or_debit_player(Game_state_t * gs_p, Player_t * p_p, int amount);
 void advance_token(Game_state_t * gs_p, int die1, int die2);
