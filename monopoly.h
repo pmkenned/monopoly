@@ -23,11 +23,11 @@ struct player_s {
     int cash;
     int location_index; /* location on board */
 
-    // TODO: mortgaged should be a field?
+    /* TODO: mortgaged should be a field? */
     struct {
-        unsigned short own        : 1;
-        unsigned short num_houses : 2;
-        unsigned short hotel      : 1;
+        unsigned int own        : 1;
+        unsigned int num_houses : 2;
+        unsigned int hotel      : 1;
     } property[NUM_LOC];
 
     int roll_double_count;
@@ -85,14 +85,14 @@ struct location_s {
     int house_price;
     int hotel_price;
     int mortgage_value;
-    int rent[6]; // 0, 1, 2, 3, and 4 houses, and a hotel
+    int rent[6]; /* 0, 1, 2, 3, and 4 houses, and a hotel */
     struct {
-        unsigned short owned      : 1; /* technically unnecessary since owner could be NULL */
-        unsigned short mortgaged  : 1;
-        unsigned short num_houses : 2;
-        unsigned short hotel      : 1;
+        unsigned int owned       : 1; /* technically unnecessary since owner could be NULL */
+        unsigned int mortgaged  : 1;
+        unsigned int num_houses : 2;
+        unsigned int hotel      : 1;
     } ownership;
-    Player_t * owner; // could be a player index...?
+    Player_t * owner; /* could be a player index...? */
 };
 
 typedef struct location_s Location_t;
@@ -123,7 +123,7 @@ struct trade_s {
     int cash_request;
     int properties_offer[NUM_LOC];
     int properties_request[NUM_LOC];
-    int get_out_free_card_offer;  // TODO: technically, if a player has two, they can offer two
+    int get_out_free_card_offer;  /* TODO: technically, if a player has two, they can offer two */
     int get_out_free_card_request;
 };
 
@@ -135,7 +135,7 @@ void do_roll(Game_state_t * gs_p, int * doubles, int * landed_on_unowned);
 void offer_trade();
 void make_property_trade_list(Player_t * p_p, int * list);
 Player_t * monopoly_owner(Location_t * l_p);
-void manage_property(Game_state_t * gs_p);
+void manage_property(Game_state_t * gs_p, Player_t * p_p);
 void do_auction(Game_state_t * gs_p, int l_i);
 void make_player_owner(Player_t * p_p, int l_i);
 void advance_turn(Game_state_t * gs_p, int doubles);
@@ -143,7 +143,7 @@ void credit_or_debit_player(Player_t * p_p, int amount);
 void advance_token(Player_t * p_p, int die1, int die2);
 void roll_dice(int * die1, int * die2);
 void land_on_property_action(Game_state_t * gs_p, Player_t * p_p, int l_i);
-int calculate_assets(Player_t * p_p); // TODO
+int calculate_assets(Player_t * p_p); /* TODO */
 int calculate_rent(Game_state_t * gs_p, Location_t * l_p);
 void charge_rent(Game_state_t * gs_p, Player_t * p_p, Location_t * l_p);
 void do_location_action(Game_state_t * gs_p);
