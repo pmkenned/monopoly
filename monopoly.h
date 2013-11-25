@@ -7,6 +7,9 @@
 #include <malloc.h>
 #include <time.h>
 
+#include "community.h"
+#include "chance.h"
+
 #define MAXCHARS 100
 #define NUM_LOC 40
 
@@ -55,6 +58,7 @@ enum {ZERO_HOUSES=0, ONE_HOUSE, TWO_HOUSES, THREE_HOUSES, FOUR_HOUSES, HOTEL};
 /* NOTE: property_groups and the group_names_e enum are corelated.
    if one changes, the other must change accordingly */
 extern int property_groups[][5];
+extern int num_property_groups;
 enum group_names_e {
     PURPLE,
     GRAY,

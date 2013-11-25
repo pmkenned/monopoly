@@ -10,51 +10,10 @@
 
 #define min(x,y) (x) < (y) ? (x) : (y)
 
-int num_comm_chest_cards = 17;
-char community_chest_strings[][100] = {
-    "Advance to GO (collect $200)",
-    "Bank error in your favor; collect $75.",
-    "Doctor's fees – Pay $50",
-    "Get out of jail free – this card may be kept until needed, or sold.",
-    "Go directly to jail – Do not pass Go, do not collect $200.",
-    "It is your birthday Collect $10 from each player.",
-    "Grand Opera Night – collect $50 from every player for opening night seats.",
-    "Income Tax refund – collect $20.",
-    "Life Insurance Matures – collect $100.",
-    "Pay Hospital Fees of $100.",
-    "Pay School Fees of $50.",
-    "Receive $25 Consultancy Fee.",
-    "You are assessed for street repairs – $40 per house, $115 per hotel.",
-    "You have won second prize in a beauty contest – collect $10.",
-    "You inherit $100.",
-    "From sale of stock you get $50.",
-    "Holiday Fund matures - receive $100."
-};
-
-int num_chance_cards = 17;
-char chance_strings[][200] = {
-    "Advance to Go (Collect $200).",
-    "Advance to Illinois Ave.",
-    "Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times the amount thrown.",
-    "Advance token to the nearest Railroad and pay owner twice the rental to which he/she is otherwise entitled. If Railroad is unowned, you may buy it from the Bank.",
-    "Advance token to the nearest Railroad and pay owner twice the rental to which he/she is otherwise entitled. If Railroad is unowned, you may buy it from the Bank.",
-    "Advance to St. Charles Place – if you pass Go, collect $200.",
-    "Bank pays you dividend of $50.",
-    "Get out of Jail free – this card may be kept until needed, or traded/sold.",
-    "Go back 3 spaces.",
-    "Go directly to Jail – do not pass Go, do not collect $200.",
-    "Make general repairs on all your property – for each house pay $25 – for each hotel $100.",
-    "Pay poor tax of $15.",
-    "Take a trip to Reading Railroad – if you pass Go collect $200.",
-    "Take a walk on the Boardwalk – advance token to Boardwalk.",
-    "You have been elected chairman of the board – pay each player $50.",
-    "Your building loan matures – collect $150.",
-    "You have won a crossword competition - collect $100."
-};
-
 const char equals[] = "================================================";
 
 /* first number is the number of properties in the group */
+#define NUM_PROPERTY_GROUPS 10
 int property_groups[][5] = {
     {2, MED_L, BAL_L, 0,     0},
     {3, ORI_L, VER_L, CON_L, 0},
@@ -182,7 +141,6 @@ void init_game(Game_state_t * gs_p) {
         p_p->piece_type = 0; // TODO
 
         p_p->cash = 1500;
-//        p_p->cash = 10; // TODO: CHANGE BACK
         p_p->location_index = GO_L;
         p_p->in_jail = 0;
         p_p->roll_double_count = 0;
@@ -256,8 +214,6 @@ void credit_or_debit_player(Player_t * p_p, int amount) {
     printf("You now have $%d.\n",coh);
 }
 
-// TODO: write a function that can handle arbitrary moves
-// including "go back 3 spaces" and "advance to boardwalk"
 void advance_token(Player_t * p_p, int die1, int die2) {
 
     int player_passed_go = 0;
@@ -418,14 +374,12 @@ void do_location_action(Game_state_t * gs_p) {
             land_on_property_action(gs_p,p_p,l_i);
             break;
         case CHEST_T:
-            /* TODO: draw community chest card */
             card = rand() % num_chance_cards;
-            printf("%s\n",community_chest_strings[card]);
+            printf("%s\n",community_chest_cards[card].text);
             break;
         case CHANCE_T:
-            /* TODO: draw chance card */
             card = rand() % num_chance_cards;
-            printf("%s\n",community_chest_strings[card]);
+            printf("%s\n",community_chest_cards[card].text);
             break;
         case INCOME_TAX_T:
             printf("You may pay either 10%% or $200\n");
@@ -618,7 +572,7 @@ end_turn:
 }
 
 // TODO
-void manage_property(Game_state_t * gs_p) {
+void manage_property(Game_state_t * gs_p, Player_t * p_p) {
     char buffer[MAXCHARS];
 
     enum manage_choice_e {
@@ -632,7 +586,9 @@ void manage_property(Game_state_t * gs_p) {
     int choice = 0;
 
     do {
-        printf("what would you like to do?\n");
+        printf("%s\n",equals);
+        printf("MANAGE PROPERTY MENU\n");
+        printf("%s\n",equals);
         printf("%d. buy houses or hotels\n", BUY_M);
         printf("%d. sells houses or hotels\n", SELL_M);
         printf("%d. mortgage property\n", MORTGAGE_M);
@@ -642,10 +598,15 @@ void manage_property(Game_state_t * gs_p) {
         fgets(buffer,MAXCHARS,stdin);
         choice = atoi(buffer);
 
+        int i;
+
         switch(choice) {
             case BUY_M:
                 printf("you own the following monopolies:\n");
-                // TODO
+                for(i=0; i < NUM_PROPERTY_GROUPS; i++) {
+                    if(monopoly_owner(property_groups[i][1]) == p_p)
+                       ;
+                }
                 break;
             case SELL_M:
                 printf("you own the following houses and hotels:\n");
@@ -660,6 +621,9 @@ void manage_property(Game_state_t * gs_p) {
                 // TODO
                 break;
             case FINISH_M:
+                break;
+            default:
+                printf("invalid input\n");
                 break;
         }
     } while(choice != FINISH_M);
