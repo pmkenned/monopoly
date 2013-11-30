@@ -12,29 +12,52 @@
 
 #define MAXCHARS 100
 #define NUM_LOC 40
+#define MAX_PLAYERS 4
+#define MAX_HOUSES 4
+#define BAIL_COST 50
+
+enum {TRADE, MANAGE, ROLL, BUY, AUCTION, PAY_DEBT, END, JAIL_ROLL, BAIL, GET_OUT_FREE};
+
+#define NUM_ACTION_STRINGS  10
+extern int actions_allowed[NUM_ACTION_STRINGS];
+extern char action_strings[][40];
 
 enum piece_type_e {SHOE, HORSE, DOG, BATTLE, IRON, SPINNING, TOPHAT, THIMBLE, WHEELBARROW};
 typedef enum piece_type_e Piece_type_t;
 
+/* Consider using this structure
+   Stores information that pertains to any given player and is not retained after the turn ends
+*/
+struct turn_s {
+    int player_index;
+    int die1, die2;
+    int doubles;
+    int roll_double_count;
+    int has_rolled;
+    int on_unowned;
+    int in_debt; /* a flag for quick checking */
+    int debt_total; /* sum of debts[] */
+    int * debts; /* stores debts owed to each of the other players */
+};
+
+typedef struct turn_s Turn_t;
+
 struct player_s {
 
     char * name;
+    int index;
     Piece_type_t piece_type;
     int cash;
     int location_index; /* location on board */
 
-    /* TODO: mortgaged should be a field? */
-    struct {
-        unsigned int own        : 1;
-        unsigned int num_houses : 2;
-        unsigned int hotel      : 1;
-    } property[NUM_LOC];
+    /* NOTE: changed to be only ownership flags for each location */
+    int property[NUM_LOC];
 
     int roll_double_count;
     int in_jail;
     int rolls_in_jail;
     int num_get_out_of_jail_free;
-    int rent_left_to_pay;
+/*    int debt_remaining; */ /* must be paid off before end of turn */
 };
 
 typedef struct player_s Player_t;
@@ -57,8 +80,8 @@ enum {ZERO_HOUSES=0, ONE_HOUSE, TWO_HOUSES, THREE_HOUSES, FOUR_HOUSES, HOTEL};
 
 /* NOTE: property_groups and the group_names_e enum are corelated.
    if one changes, the other must change accordingly */
+#define NUM_PROPERTY_GROUPS 10
 extern int property_groups[][5];
-extern int num_property_groups;
 enum group_names_e {
     PURPLE,
     GRAY,
@@ -89,7 +112,7 @@ struct location_s {
     struct {
         unsigned int owned       : 1; /* technically unnecessary since owner could be NULL */
         unsigned int mortgaged  : 1;
-        unsigned int num_houses : 2;
+        unsigned int num_houses : 3;
         unsigned int hotel      : 1;
     } ownership;
     Player_t * owner; /* could be a player index...? */
@@ -111,7 +134,7 @@ struct game_state_s {
  
     Player_t * players;
  
-    int turn;
+    Turn_t turn;
     int game_over;
 };
 
@@ -131,21 +154,31 @@ typedef struct trade_s Trade_t;
 
 void init_game(Game_state_t * gs_p);
 void enter_jail(Player_t * p_p);
-void do_roll(Game_state_t * gs_p, int * doubles, int * landed_on_unowned);
+void do_roll(Game_state_t * gs_p);
 void offer_trade();
 void make_property_trade_list(Player_t * p_p, int * list);
 Player_t * monopoly_owner(Location_t * l_p);
 void manage_property(Game_state_t * gs_p, Player_t * p_p);
 void do_auction(Game_state_t * gs_p, int l_i);
 void make_player_owner(Player_t * p_p, int l_i);
-void advance_turn(Game_state_t * gs_p, int doubles);
-void credit_or_debit_player(Player_t * p_p, int amount);
+void advance_turn(Game_state_t * gs_p);
+
+void unmortgage_properties(Player_t * p_p);
+void mortgage_properties(Player_t * p_p);
+void buy_houses(Player_t * p_p);
+void sell_houses(Player_t * p_p);
+
+void pay_off_debts(Game_state_t * gs_p);
+void indebt_current_player(Turn_t * t, int creditor, int amount);
+void credit_player(Player_t * p_p, int amount);
+void debit_player(Player_t * p_p, int amount);
+
 void advance_token(Player_t * p_p, int die1, int die2);
-void roll_dice(int * die1, int * die2);
+void roll_dice(Game_state_t * gs_p);
 void land_on_property_action(Game_state_t * gs_p, Player_t * p_p, int l_i);
 int calculate_assets(Player_t * p_p); /* TODO */
 int calculate_rent(Game_state_t * gs_p, Location_t * l_p);
-void charge_rent(Game_state_t * gs_p, Player_t * p_p, Location_t * l_p);
+void charge_rent(Game_state_t * gs_p, Location_t * l_p);
 void do_location_action(Game_state_t * gs_p);
 void game_iter(Game_state_t * gs_p);
 void game_loop(Game_state_t * gs_p);

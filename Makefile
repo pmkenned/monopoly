@@ -1,3 +1,6 @@
+# TODO: make dependencies include header files
+#       use gcc -MM to generate list of dependencies
+
 SOURCES = \
 	main.c \
 	monopoly.c \
