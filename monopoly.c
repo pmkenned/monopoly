@@ -73,17 +73,17 @@ ownership:
     {"Community Chest",      CHEST_T,      NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Baltic Avenue",        PROPERTY_T,   PURPLE,   60,  50,  50, 30, { 4, 20, 60, 180, 320, 450}, {0, 0, 0, 0}, NULL},
     {"Income Tax",           INCOME_TAX_T, NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
-    {"Reading Railroad",     PROPERTY_T,   RAIL,    200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Reading Railroad",     PROPERTY_T,   RAIL,    200,   0,   0,100, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Oriental Avenue",      PROPERTY_T,   GRAY,    100,  50,  50, 50, { 6, 30, 90, 270, 400, 550}, {0, 0, 0, 0}, NULL},
     {"Chance",               CHANCE_T,     NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Vermont Avenue",       PROPERTY_T,   GRAY,    100,  50,  50, 50, { 6, 30, 90, 270, 400, 550}, {0, 0, 0, 0}, NULL},
     {"Connecticut Avenue",   PROPERTY_T,   GRAY,    120,  50,  50, 60, { 8, 40,100, 300, 450, 600}, {0, 0, 0, 0}, NULL},
     {"Jail",                 JAIL_T,       NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"St. Charles Place",    PROPERTY_T,   PINK,    140, 100, 100, 70, {10, 50,150, 450, 625, 750}, {0, 0, 0, 0}, NULL},
-    {"Electric Company",     PROPERTY_T,   UTILITY, 150,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Electric Company",     PROPERTY_T,   UTILITY, 150,   0,   0, 75, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"States Avenue",        PROPERTY_T,   PINK,    140, 100, 100, 70, {10, 50,150, 450, 625, 750}, {0, 0, 0, 0}, NULL},
     {"Virginia Avenue",      PROPERTY_T,   PINK,    160, 100, 100, 80, {12, 60,180, 500, 700, 900}, {0, 0, 0, 0}, NULL},
-    {"Pennsylvania Railroad",PROPERTY_T,   RAIL,    200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Pennsylvania Railroad",PROPERTY_T,   RAIL,    200,   0,   0,100, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"St. James Place",      PROPERTY_T,   ORANGE,  180, 100, 100, 90, {14, 70,200, 550, 750, 950}, {0, 0, 0, 0}, NULL},
     {"Community Chest",      CHEST_T,      NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Tennessee Avenue",     PROPERTY_T,   ORANGE,  180, 100, 100, 90, {14, 70,200, 550, 750, 950}, {0, 0, 0, 0}, NULL},
@@ -93,17 +93,17 @@ ownership:
     {"Chance",               CHANCE_T,     NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Indiana Avenue",       PROPERTY_T,   RED,     220, 150, 150,110, {18, 90,250, 700, 875,1050}, {0, 0, 0, 0}, NULL},
     {"Illinois Avenue",      PROPERTY_T,   RED,     240, 150, 150,120, {20,100,400, 750, 925,1100}, {0, 0, 0, 0}, NULL},
-    {"B.&O. Railroad",       PROPERTY_T,   RAIL,    200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"B.&O. Railroad",       PROPERTY_T,   RAIL,    200,   0,   0,100, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Atlantic Avenue",      PROPERTY_T,   YELLOW,  260, 150, 150,130, {22,110,330, 800, 975,1150}, {0, 0, 0, 0}, NULL},
     {"Ventnor Avenue",       PROPERTY_T,   YELLOW,  260, 150, 150,130, {22,110,330, 800, 975,1150}, {0, 0, 0, 0}, NULL},
-    {"Water Works",          PROPERTY_T,   UTILITY, 150,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Water Works",          PROPERTY_T,   UTILITY, 150,   0,   0, 75, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Marvin Gardens",       PROPERTY_T,   YELLOW,  280, 150, 150,140, {24,120,360, 850,1025,1150}, {0, 0, 0, 0}, NULL},
     {"GO TO JAIL",           GO_TO_JAIL_T, NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Pacific Avenue",       PROPERTY_T,   GREEN,   300, 200, 200,150, {26,130,390, 900,1100,1275}, {0, 0, 0, 0}, NULL},
     {"North Carolina Avenue",PROPERTY_T,   GREEN,   300, 200, 200,150, {26,130,390, 900,1100,1275}, {0, 0, 0, 0}, NULL},
     {"Community Chest",      CHEST_T,      NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Pennsylvania Avenue",  PROPERTY_T,   GREEN,   320, 200, 200,160, {28,150,450,1000,1200,1400}, {0, 0, 0, 0}, NULL},
-    {"Short Line",           PROPERTY_T,   RAIL,    200,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
+    {"Short Line",           PROPERTY_T,   RAIL,    200,   0,   0,100, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Chance",               CHANCE_T,     NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
     {"Park Place",           PROPERTY_T,   BLUE,    350, 200, 200,175, {35,175,500,1100,1300,1500}, {0, 0, 0, 0}, NULL},
     {"Luxury Tax",           LUXURY_TAX_T, NONE,      0,   0,   0,  0, { 0,  0,  0,   0,   0,   0}, {0, 0, 0, 0}, NULL},
@@ -159,7 +159,7 @@ void init_game(Game_state_t * gs_p) {
         *name = malloc(sizeof(char)*(name_len+1));
         strncpy(*name,buffer,name_len);
 
-        p_p->index = i; /* TODO: should this stay? */
+        p_p->index = i; /* TODO: should this stay? only used by indebt_current_player */
 
 /*        printf("piece type: ");
         fgets(buffer,MAXCHARS,stdin);
@@ -167,17 +167,15 @@ void init_game(Game_state_t * gs_p) {
         p_p->piece_type = 0; /* TODO */
 
         p_p->cash = 1500;
+        p_p->liquid_assets = p_p->cash;
+        p_p->taxable_assets = p_p->cash; /* perhaps this should always be calculated on the fly */
         p_p->location_index = GO_L;
         p_p->in_jail = 0;
-        /* NOTE: these are no longer used */
-/*        p_p->roll_double_count = 0; */
-/*        p_p->debt_remaining = 0; */
-        for(j=0; j<NUM_LOC; j++) {
+
+        p_p->bankrupt = 0;
+
+        for(j=0; j<NUM_LOC; j++)
             p_p->property[i] = 0;
-/*            p_p->property[j].own = 0;
-            p_p->property[j].num_houses = 0;
-            p_p->property[j].hotel = 0; */
-        }
         p_p->num_get_out_of_jail_free = 0;
     }
 
@@ -195,30 +193,22 @@ void init_game(Game_state_t * gs_p) {
     /* choose random starting player */
     p_i = gs_p->turn.player_index = rand() % num_players;
     printf("\nRandom starting player is %s\n",gs_p->players[p_i].name);
-/*    gs_p->turn = turn; */
 }
 
 void advance_turn(Game_state_t * gs_p) {
     int * p_i = &(gs_p->turn.player_index);
     int num_players = gs_p->num_players;
     int i;
-/*    Player_t * current_player_p; */
     Player_t * p_p;
     char * p_name;
     int name_len;
     char last_char;
 
-/*    current_player_p = &(gs_p->players[*p_i]); */
-
-   /* NOTE: by this point, turn has already ended.
-      Thus, if player is in jail, the opportunity for doubles
-      to get them out of jail has already passed */
-
-   /* NOTE: doubles keeping the current player is now handled in game_iter */
-/*    if(!doubles || current_player_p->in_jail) */
+next_player:
     *p_i = (*p_i + 1) % num_players;
-
     p_p = &(gs_p->players[*p_i]);
+    if(p_p->bankrupt) /* skip over bankrupt players */
+        goto next_player;
 
     p_name = p_p->name;
     printf("%s\n",equals);
@@ -536,7 +526,7 @@ void game_iter(Game_state_t * gs_p) {
     gs_p->turn.roll_double_count = 0;
     gs_p->turn.in_debt = 0;
     gs_p->turn.debt_total = 0;
-/*    int doubles; */
+    gs_p->turn.doubles = 0;
 
     /* at the beginning of the turn, the player does not owe anyone */
     for(i=0; i < gs_p->num_players+1; i++) /* +1 for bank */
@@ -544,18 +534,33 @@ void game_iter(Game_state_t * gs_p) {
 
     /* let the player choose what to do */
 
-    /* TODO: when player rolls doubles, they don't really "end turn" */
-
     while(!end_of_turn) {
         int choice;
         int l_i;
         Location_t * l_p;
         int price, sufficient_funds;
 
-        /* TODO: currently, debt_remaining > 0 assumes that debt is due to rent
-           however, it might be the bank or any player(s)
-           need to use turn data from game state to enforce debts
-        */
+        if(p_p->liquid_assets < gs_p->turn.debt_total) {
+            printf("\n\n\n\n\n\n\n\n\n\n");
+            printf("Your total liquid assets: %d\n",p_p->liquid_assets);
+            printf("Total debt: %d\n",gs_p->turn.debt_total);
+            printf("YOU ARE BANKRUPT!!!!\n");
+            end_of_turn = 1;
+            continue;
+            /* QUESTION: can you go bankrupt with debts to the bank as well as other players? */
+
+            /* in any case: */
+                /* must sell all houses and hotels */
+
+            /* if you owe the bank: */
+                /* must auction off all property */
+
+            /* if you owe other player: */
+                /* turn over all cash and titles to other player */
+
+            /* if you owe multiple players... divide equally? */
+
+        }
 
         if(in_jail) {
             actions_allowed[TRADE]          = 1;
@@ -567,7 +572,7 @@ void game_iter(Game_state_t * gs_p) {
             actions_allowed[END]            = gs_p->turn.has_rolled ? 1 : 0;
             actions_allowed[JAIL_ROLL]      = gs_p->turn.has_rolled ? 0 : 1;
             actions_allowed[BAIL]           = gs_p->turn.has_rolled ? 0 : 1;
-            actions_allowed[GET_OUT_FREE]   = gs_p->turn.has_rolled ? 0 : 1;
+            actions_allowed[GET_OUT_FREE]   = (!gs_p->turn.has_rolled  && p_p->num_get_out_of_jail_free > 0) ? 1 : 0;
         }
         else {
             actions_allowed[TRADE]          = 1;
@@ -575,7 +580,7 @@ void game_iter(Game_state_t * gs_p) {
 
             /* TODO: this probably allows them to roll again after getting out of jail on doubles */
             /* if so, must differentiate between doubles that get you out of jail vs. doubles when not in jail */
-            actions_allowed[ROLL]           = (gs_p->turn.has_rolled && !gs_p->turn.doubles) ? 0 : 1;
+            actions_allowed[ROLL]           = (!gs_p->turn.has_rolled || gs_p->turn.doubles) ? 1 : 0;
             actions_allowed[BUY]            = gs_p->turn.on_unowned ? 1 : 0;
             actions_allowed[AUCTION]        = gs_p->turn.on_unowned ? 1 : 0;
             actions_allowed[PAY_DEBT]       = gs_p->turn.in_debt ? 1 : 0;
@@ -603,8 +608,8 @@ ask_for_choice:
 
         printf("%s: ",p_p->name);
         fgets(buffer,MAXCHARS,stdin);
-        printf("\n\n\n");
         choice = atoi(buffer);
+        printf("\n\n\n");
 
         if(choice < 0 || choice > NUM_ACTION_STRINGS || !actions_allowed[choice]) {
             printf("\n\n\nINVALID CHOICE\n\n\n");
@@ -635,13 +640,12 @@ ask_for_choice:
                     make_player_owner(p_p, l_i);
                     gs_p->turn.on_unowned = 0;
                 }
-                else {
+                else
                     printf("INSUFFICIENT FUNDS TO MAKE PURCHASE\n");
-                }
                 break;
             case AUCTION:
                 do_auction(gs_p, l_i);
-                gs_p->turn.on_unowned = 0;
+                gs_p->turn.on_unowned = 0; /* property will necessarily be owned after auction */
                 break;
             case PAY_DEBT:
                 if(gs_p->turn.debt_total < p_p->cash)
@@ -674,6 +678,14 @@ ask_for_choice:
 
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     advance_turn(gs_p);
+}
+
+void liquidate_assets() {
+
+    /* sell all houses and hotels */
+
+    /* */
+
 }
 
 void manage_property(Game_state_t * gs_p, Player_t * p_p) {
@@ -712,21 +724,30 @@ void manage_property(Game_state_t * gs_p, Player_t * p_p) {
     } while(choice != FINISH_M);
 }
 
+/* TODO: consider combining all of the manage property subroutines into a single routine */
+
 void unmortgage_properties(Player_t * p_p) {
     int to_unmortgage;
     int valid_choices[NUM_LOC];
     int valid_choice;
     int i;
+    int mortgage_value, cost, sufficient_funds;
 
-    for(i=0; i<NUM_LOC; i++)
-        valid_choices[i] = 0;
+    /* TODO: print "cost to unmortgage" somewhere for the player */
 
     while(to_unmortgage != NUM_LOC) {
+        for(i=0; i<NUM_LOC; i++)
+            valid_choices[i] = 0;
+
         printf("You own the following mortgaged properties:\n");
         for(i=0; i < NUM_LOC; i++) {
-            if(p_p->property[i] && locations[i].ownership.mortgaged)
+            if(p_p->property[i] && locations[i].ownership.mortgaged) {
                 printf("%d. %s\n",i,locations[i].name);
+                valid_choices[i] = 1;
+            }
         }
+
+        printf("%d. done\n",NUM_LOC);
 
         printf("Which property would you like to unmortgage: ");
         fgets(buffer,MAXCHARS,stdin);
@@ -740,6 +761,18 @@ void unmortgage_properties(Player_t * p_p) {
         if(!valid_choice) {
             printf("\n\n\nINVALID CHOICE\n\n\n");
             continue;
+        }
+
+        mortgage_value = locations[to_unmortgage].mortgage_value;
+        cost = mortgage_value * 1.1; /* 10% interest */
+        sufficient_funds = p_p->cash >= cost;
+
+        if(sufficient_funds) {
+            debit_player(p_p, cost);
+            locations[to_unmortgage].ownership.mortgaged = 0;
+        }
+        else {
+            printf("YOU DO NO HAVE SUFFICIENT FUNDS TO UNMORTGAGE THAT PROPERTY\n");
         }
             
     }
@@ -761,11 +794,15 @@ void mortgage_properties(Player_t * p_p) {
 
         printf("\n\n\n\n\n\n\n\n\n\n");
 
-        printf("You own the following unmortgaged properties:\n");
+        printf("You own the following unmortgaged, unimproved properties:\n");
 
         for(i=0; i < NUM_LOC; i++) {
-            /* TODO: make sure there are 0 houses */
-            if(p_p->property[i] && !locations[i].ownership.mortgaged) {
+
+            if(p_p->property[i]                         &&
+               !locations[i].ownership.mortgaged        &&
+               (locations[i].ownership.num_houses == 0) &&
+               !locations[i].ownership.hotel) {
+
                 printf("%d. %s\n",i,locations[i].name);
                 valid_choices[i] = 1;
             }
@@ -832,10 +869,6 @@ void sell_houses(Player_t * p_p) {
             }
             printf("] %s\n",locations[i].name);
 
-/*            if(p_p->property[i] && num_houses > 0)
-                printf("%d. %s: %d houses\n",i,locations[i].name, num_houses);
-            if(p_p->property[i] && locations[i].ownership.hotel)
-                printf("%d. %s: hotel\n",i,locations[i].name); */
             valid_choices[i] = 1;
         }
 
@@ -1235,14 +1268,16 @@ prompt_for_partner:
                 if(p_p->num_get_out_of_jail_free > 0)
                     trade_details.get_out_free_card_offer = !trade_details.get_out_free_card_offer;
                 else
-                    printf("you do not have a get-out-of-jail free card\n");
+                    printf("You do not have a get-out-of-jail free card.\n");
                 break;
             case CASH_R:
                 printf("cash amount to request: ");
                 fgets(buffer,MAXCHARS,stdin);
                 cash_request = atoi(buffer);
-                /* TODO: make sure player has sufficient funds*/
-                trade_details.cash_request = cash_request;
+                if(trade_details.partner->cash <= cash_request)
+                    trade_details.cash_request = cash_request;
+                else
+                    printf("Trading partner does not have that much cash.\n");
                 break;
             case PROPERTY_R:
                 printf("You may request any of the following properties:\n");
@@ -1296,7 +1331,7 @@ prompt_for_partner:
         return;
     }
 
-    printf("executing trade...\n");
+    printf("Executing trade...\n");
 
     /* exchange cash */
     if(trade_details.cash_offer > 0) {

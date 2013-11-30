@@ -48,7 +48,11 @@ struct player_s {
     int index;
     Piece_type_t piece_type;
     int cash;
+    int liquid_assets; /* cash + half price of houses/hotels + mortgage value of property */
+    int taxable_assets; /* used for income tax */
     int location_index; /* location on board */
+
+    int bankrupt;
 
     /* NOTE: changed to be only ownership flags for each location */
     int property[NUM_LOC];
