@@ -1,4 +1,4 @@
-#include "community.h"
+#include "monopoly.h"
 
 int num_comm_chest_cards = 17;
 Card_t community_chest_cards[] = {
@@ -21,53 +21,68 @@ Card_t community_chest_cards[] = {
     {"Holiday Fund matures - receive $100.",                                       &holiday_fund       }
 };
 
-void cc_advance_to_go() {
+void cc_advance_to_go(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    p_p->location_index = GO_L;
+    credit_player(p_p, 200);
 }
 
-void bank_error() {
+void bank_error(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    credit_player(p_p,75);
 }
 
-void doctor() {
+void doctor(Game_state_t * gs_p) {
+    int bank = gs_p->num_players;
+    indebt_current_player(&(gs_p->turn),bank,50);
 }
 
-void cc_get_out_of_jail() {
+void cc_get_out_of_jail(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    p_p->num_get_out_of_jail_free++;
 }
 
-void cc_go_to_jail() {
+void cc_go_to_jail(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    enter_jail(p_p);
 }
 
-void birthday() {
+void birthday(Game_state_t * gs_p) {
 }
 
-void opera() {
+void opera(Game_state_t * gs_p) {
 }
 
-void income_tax_refund() {
+void income_tax_refund(Game_state_t * gs_p) {
 }
 
-void life_insurance() {
+void life_insurance(Game_state_t * gs_p) {
 }
 
-void hospital_fee() {
+void hospital_fee(Game_state_t * gs_p) {
 }
 
-void school_fee() {
+void school_fee(Game_state_t * gs_p) {
 }
 
-void consultancy_fee() {
+void consultancy_fee(Game_state_t * gs_p) {
 }
 
-void street_repairs() {
+void street_repairs(Game_state_t * gs_p) {
 }
 
-void beauty_contest() {
+void beauty_contest(Game_state_t * gs_p) {
 }
 
-void inherit() {
+void inherit(Game_state_t * gs_p) {
 }
 
-void sale_of_stock() {
+void sale_of_stock(Game_state_t * gs_p) {
 }
 
-void holiday_fund() {
+void holiday_fund(Game_state_t * gs_p) {
 }

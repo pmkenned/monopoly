@@ -7,27 +7,24 @@
 #include <malloc.h>
 #include <time.h>
 
-#include "community.h"
-#include "chance.h"
-
 #define MAXCHARS 100
 #define NUM_LOC 40
 #define MAX_PLAYERS 4
 #define MAX_HOUSES 4
 #define BAIL_COST 50
 
-enum {TRADE, MANAGE, ROLL, BUY, AUCTION, PAY_DEBT, END, JAIL_ROLL, BAIL, GET_OUT_FREE};
+extern char buffer[MAXCHARS];
 
-#define NUM_ACTION_STRINGS  10
-extern int actions_allowed[NUM_ACTION_STRINGS];
-extern char action_strings[][40];
+enum locations_enum {
+    GO_L,   MED_L, COM0_L, BAL_L,  INC_L, RRR_L, ORI_L,  CHA0_L, VER_L, CON_L, /* first side */
+    JAIL_L, STC_L, ELE_L,  STA_L,  VIR_L, PRR_L, STJ_L,  COM1_L, TEN_L, NYA_L, /* second side */
+    PARK_L, KEN_L, CHA1_L, IND_L,  ILL_L, BRR_L, ATL_L,  VEN_L,  H2O_L, MAR_L, /* third side */
+    GTJ_L,  PAC_L, NCA_L,  COM2_L, PEN_L, SRR_L, CHA2_L, PAR_L,  LUX_L, BRD_L  /* fourth side */
+};
 
 enum piece_type_e {SHOE, HORSE, DOG, BATTLE, IRON, SPINNING, TOPHAT, THIMBLE, WHEELBARROW};
 typedef enum piece_type_e Piece_type_t;
 
-/* Consider using this structure
-   Stores information that pertains to any given player and is not retained after the turn ends
-*/
 struct turn_s {
     int player_index;
     int die1, die2;
@@ -57,14 +54,44 @@ struct player_s {
     /* NOTE: changed to be only ownership flags for each location */
     int property[NUM_LOC];
 
-    int roll_double_count;
     int in_jail;
     int rolls_in_jail;
     int num_get_out_of_jail_free;
-/*    int debt_remaining; */ /* must be paid off before end of turn */
 };
 
 typedef struct player_s Player_t;
+
+struct game_state_s {
+    int num_players;
+    int num_active_players; /* excludes bankrupt players */
+ 
+    Player_t * players;
+    Player_t * winner;
+ 
+    Turn_t turn;
+    int game_over; /* when only one player is not bankrupt */
+};
+
+typedef struct game_state_s Game_state_t;
+
+struct card_s {
+    char text[200];
+    void (*func)(Game_state_t * gs_p);
+};
+
+typedef struct card_s Card_t;
+
+extern int num_chance_cards;
+extern Card_t chance_cards[];
+
+extern int num_comm_chest_cards;
+extern Card_t community_chest_cards[];
+
+enum {TRADE, MANAGE, ROLL, BUY, AUCTION, PAY_DEBT, END, JAIL_ROLL, BAIL, GET_OUT_FREE};
+
+#define NUM_ACTION_STRINGS  10
+extern int actions_allowed[NUM_ACTION_STRINGS];
+extern char action_strings[][40];
 
 enum location_type_e {
     GO_T,
@@ -126,24 +153,6 @@ typedef struct location_s Location_t;
 
 extern Location_t locations[NUM_LOC];
 
-enum locations_enum {
-    GO_L,   MED_L, COM0_L, BAL_L,  INC_L, RRR_L, ORI_L,  CHA0_L, VER_L, CON_L, /* first side */
-    JAIL_L, STC_L, ELE_L,  STA_L,  VIR_L, PRR_L, STJ_L,  COM1_L, TEN_L, NYA_L, /* second side */
-    PARK_L, KEN_L, CHA1_L, IND_L,  ILL_L, BRR_L, ATL_L,  VEN_L,  H2O_L, MAR_L, /* third side */
-    GTJ_L,  PAC_L, NCA_L,  COM2_L, PEN_L, SRR_L, CHA2_L, PAR_L,  LUX_L, BRD_L  /* fourth side */
-};
-
-struct game_state_s {
-    int num_players;
- 
-    Player_t * players;
- 
-    Turn_t turn;
-    int game_over;
-};
-
-typedef struct game_state_s Game_state_t;
-
 struct trade_s {
     Player_t * player_making_offer, * partner;
     int cash_offer;
@@ -156,7 +165,9 @@ struct trade_s {
 
 typedef struct trade_s Trade_t;
 
+void pause();
 void init_game(Game_state_t * gs_p);
+void print_game_state(Game_state_t * gs_p);
 void enter_jail(Player_t * p_p);
 void do_roll(Game_state_t * gs_p);
 void offer_trade();
@@ -172,6 +183,7 @@ void mortgage_properties(Player_t * p_p);
 void buy_houses(Player_t * p_p);
 void sell_houses(Player_t * p_p);
 
+void declare_bankruptcy(Game_state_t * gs_p);
 void pay_off_debts(Game_state_t * gs_p);
 void indebt_current_player(Turn_t * t, int creditor, int amount);
 void credit_player(Player_t * p_p, int amount);
@@ -180,12 +192,46 @@ void debit_player(Player_t * p_p, int amount);
 void advance_token(Player_t * p_p, int die1, int die2);
 void roll_dice(Game_state_t * gs_p);
 void land_on_property_action(Game_state_t * gs_p, Player_t * p_p, int l_i);
-int calculate_assets(Player_t * p_p); /* TODO */
 int calculate_rent(Game_state_t * gs_p, Location_t * l_p);
 void charge_rent(Game_state_t * gs_p, Location_t * l_p);
 void do_location_action(Game_state_t * gs_p);
 void game_iter(Game_state_t * gs_p);
 void game_loop(Game_state_t * gs_p);
 void end_game(Game_state_t * gs_p);
+
+void c_advance_to_go(Game_state_t * gs_p);
+void advance_to_illinois(Game_state_t * gs_p);
+void advance_to_utility(Game_state_t * gs_p);
+void advance_to_railroad(Game_state_t * gs_p);
+void advance_to_stcharles(Game_state_t * gs_p);
+void bank_pays_dividend(Game_state_t * gs_p);
+void c_get_out_of_jail(Game_state_t * gs_p);
+void go_back_three(Game_state_t * gs_p);
+void c_go_to_jail(Game_state_t * gs_p);
+void general_repairs(Game_state_t * gs_p);
+void poor_tax(Game_state_t * gs_p);
+void reading_railroad(Game_state_t * gs_p);
+void advance_to_boardwalk(Game_state_t * gs_p);
+void chairman(Game_state_t * gs_p);
+void building_loan(Game_state_t * gs_p);
+void crossword(Game_state_t * gs_p);
+
+void cc_advance_to_go(Game_state_t * gs_p);
+void bank_error(Game_state_t * gs_p);
+void doctor(Game_state_t * gs_p);
+void cc_get_out_of_jail(Game_state_t * gs_p);
+void cc_go_to_jail(Game_state_t * gs_p);
+void birthday(Game_state_t * gs_p);
+void opera(Game_state_t * gs_p);
+void income_tax_refund(Game_state_t * gs_p);
+void life_insurance(Game_state_t * gs_p);
+void hospital_fee(Game_state_t * gs_p);
+void school_fee(Game_state_t * gs_p);
+void consultancy_fee(Game_state_t * gs_p);
+void street_repairs(Game_state_t * gs_p);
+void beauty_contest(Game_state_t * gs_p);
+void inherit(Game_state_t * gs_p);
+void sale_of_stock(Game_state_t * gs_p);
+void holiday_fund(Game_state_t * gs_p);
 
 #endif

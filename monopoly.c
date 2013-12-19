@@ -1,6 +1,21 @@
 #include "monopoly.h"
 
+/*
+   Questions:
+
+ * What happens when you enter bankrupty while owing to multiple people?
+   How are your assets divided?
+
+ * When you are in jail and roll dice in an attempt to get doubles, your doubles
+   do not allow you to roll again. However, if you roll two doubles on your next turn,
+   do you go to jail? In other words, should the doubles to get you out of jail
+   increment the roll_double_count?
+
+*/
+
 /* major TODO items:
+ * verify that liquid and taxable assets are being calculated correctly
+ * consider calculating liquid and taxable assets on the fly vs. through book-keeping
  * chance and community chest cards
  * finish trade functionality
  * allow players to manage property
@@ -9,9 +24,6 @@
 
 /*
 Notes:
-   options for bankruptcy:
-   * write a function which declares bankruptcy
-
    ways to raise money:
    * offer a trade
    * sell houses and hotels
@@ -28,7 +40,13 @@ Notes:
    * 
 */
 
-#define DEBUG
+/* DEBUG modes: */
+/*#define DEBUG_MASTER */
+/*#define DEBUG_SPLIT */
+/*#define DEBUG_GOOJFC */
+/*#define DEBUG_DOUBLES */
+/*#define DEBUG_LOW_CASH */
+/*#define DEBUG_CARDS */
 
 #define min(x,y) (x) < (y) ? (x) : (y)
 
@@ -141,6 +159,7 @@ void init_game(Game_state_t * gs_p) {
     } while(num_players < 2 || num_players > MAX_PLAYERS);
 
     gs_p->num_players = num_players;
+    gs_p->num_active_players = num_players; /* nobody is bankrupt */
     gs_p->players = malloc(sizeof(Player_t)*num_players); /* create players */
     gs_p->turn.debts = malloc(sizeof(int)*(num_players+1)); /* +1 for the bank */
 
@@ -166,7 +185,11 @@ void init_game(Game_state_t * gs_p) {
         chomp(buffer); */
         p_p->piece_type = 0; /* TODO */
 
+#ifdef DEBUG_LOW_CASH
+        p_p->cash = 10;
+#else
         p_p->cash = 1500;
+#endif
         p_p->liquid_assets = p_p->cash;
         p_p->taxable_assets = p_p->cash; /* perhaps this should always be calculated on the fly */
         p_p->location_index = GO_L;
@@ -174,13 +197,18 @@ void init_game(Game_state_t * gs_p) {
 
         p_p->bankrupt = 0;
 
-        for(j=0; j<NUM_LOC; j++)
+        for(j=0; j<NUM_LOC; j++) /* could use memset... */
             p_p->property[i] = 0;
+#ifdef DEBUG_GOOJFC
+        p_p->num_get_out_of_jail_free = 2;
+#else
         p_p->num_get_out_of_jail_free = 0;
+#endif
+
     }
 
     /* FOR TESTING: initially give all property to player 0 */
-#ifdef DEBUG
+#ifdef DEBUG_MASTER
     {
     Player_t * master = &(gs_p->players[0]);
     for(i=0; i < NUM_LOC; i++) {
@@ -188,21 +216,38 @@ void init_game(Game_state_t * gs_p) {
             make_player_owner(master, i);
     }
     }
+#else
+#ifdef DEBUG_SPLIT
+    {
+    Player_t * p0 = &(gs_p->players[0]);
+    Player_t * p1 = &(gs_p->players[1]);
+    for(i=0; i < NUM_LOC/2; i++) {
+        if(locations[i].location_type == PROPERTY_T)
+            make_player_owner(p0, i);
+    }
+    for(i=NUM_LOC/2; i < NUM_LOC; i++) {
+        if(locations[i].location_type == PROPERTY_T)
+            make_player_owner(p1, i);
+    }
+    }
+#endif
 #endif
 
     /* choose random starting player */
     p_i = gs_p->turn.player_index = rand() % num_players;
     printf("\nRandom starting player is %s\n",gs_p->players[p_i].name);
+    pause();
+}
+
+void pause() {
+    printf("[press enter to continue]\n");
+    fgets(buffer,MAXCHARS,stdin);
 }
 
 void advance_turn(Game_state_t * gs_p) {
     int * p_i = &(gs_p->turn.player_index);
     int num_players = gs_p->num_players;
-    int i;
     Player_t * p_p;
-    char * p_name;
-    int name_len;
-    char last_char;
 
 next_player:
     *p_i = (*p_i + 1) % num_players;
@@ -210,35 +255,11 @@ next_player:
     if(p_p->bankrupt) /* skip over bankrupt players */
         goto next_player;
 
-    p_name = p_p->name;
-    printf("%s\n",equals);
-    name_len = strlen(p_name);
-    last_char = p_name[name_len-1];
-    if(last_char == 's')
-        printf("It is now %s' turn\n",p_name);
-    else
-        printf("It is now %s's turn\n",p_name);
-    printf("%s\n",equals);
-    printf("Assets:\n");
-    printf("$%d cash on hand\n",p_p->cash);
-    printf("Properties: \n");
-
-    for(i=0; i<NUM_LOC; i++) {
-        if(p_p->property[i]) {
-            int num_houses = locations[i].ownership.num_houses;
-            printf("%s ",locations[i].name);
-            if(locations[i].ownership.mortgaged)
-                printf("[MORTGAGED]\n");
-            else if(num_houses > 0)
-                printf("with %d houses\n", num_houses);
-            else if(locations[i].ownership.hotel)
-                printf("with a hotel\n");
-            else
-                printf("\n");
-        }
-    }
+    /* Used to print game state... */
 }
 
+/* NOTE: Should only be called when the player has sufficient cash to
+         pay off all debts. */
 void pay_off_debts(Game_state_t * gs_p) {
     int i;
     int player_index = gs_p->turn.player_index;
@@ -281,14 +302,15 @@ void debit_player(Player_t * p_p, int amount) {
 
     /* if insufficient funds */
     if(p_p->cash < amount) {
-/*        p_p->debt_remaining += amount; */
         printf("%s, YOU DO NOT HAVE SUFFICIENT FUNDS TO PAY $%d.\n", p_name, amount);
         printf("You must raise money by offering a trade or by selling or mortgaging property\n");
+        pause();
     }
     else {
         p_p->cash -= amount;
         printf("%s, your account has been debited $%d. ", p_name, amount);
         printf("You now have $%d.\n", p_p->cash);
+        pause();
     }
 }
 
@@ -298,6 +320,14 @@ void advance_token(Player_t * p_p, int die1, int die2) {
     int sum = die1 + die2;
     int new_l_i = (*l_i+sum) % NUM_LOC;
     int i;
+
+#ifdef DEBUG_CARDS
+    static int card_index = 0;
+    int card_indices[] = {COM0_L, COM1_L, COM2_L, CHA0_L, CHA1_L, CHA2_L};
+    *l_i = card_indices[card_index];
+    card_index++;
+    return;
+#endif
 
     for(i=1; i<sum+1; i++) {
         int loc = (*l_i+i) % NUM_LOC;
@@ -312,18 +342,20 @@ void advance_token(Player_t * p_p, int die1, int die2) {
     }
     printf("\n");
 
-    (*l_i) = new_l_i;
+    *l_i = new_l_i;
 }
 
 void roll_dice(Game_state_t * gs_p) {
+#ifdef DEBUG_DOUBLES
+    int die1 = gs_p->turn.die1 = 2;
+    int die2 = gs_p->turn.die2 = 2;
+#else
     int die1 = gs_p->turn.die1 = (rand() % 6)+1;
     int die2 = gs_p->turn.die2 = (rand() % 6)+1;
+#endif
     gs_p->turn.doubles = (die1 == die2);
+    gs_p->turn.has_rolled = 1;
     printf("die 1: %d\ndie 2: %d\n",die1,die2);
-}
-
-int calculate_assets(Player_t * p_p) {
-    return p_p->cash; /* TODO: add in mortgage value, houses, hotels, ...*/
 }
 
 int calculate_rent(Game_state_t * gs_p, Location_t * l_p) {
@@ -419,7 +451,6 @@ void charge_rent(Game_state_t * gs_p, Location_t * l_p) {
 /* TODO: might be able to remove the p_p parameter */
 void land_on_property_action(Game_state_t * gs_p, Player_t * p_p, int l_i) {
     Location_t * l_p = &(locations[l_i]);
-
     int owned = l_p->ownership.owned;
     if(owned) {
         Player_t * owner = l_p->owner;
@@ -448,7 +479,7 @@ void do_location_action(Game_state_t * gs_p) {
 
     int bank = gs_p->num_players;
 
-    int assets, ten_percent, least_amount;
+    int ten_percent, least_amount;
     int card;
 
     switch(l_type) {
@@ -459,17 +490,18 @@ void do_location_action(Game_state_t * gs_p) {
             land_on_property_action(gs_p,p_p,l_i);
             break;
         case CHEST_T:
-            card = rand() % num_chance_cards;
+            card = rand() % num_comm_chest_cards;
             printf("%s\n",community_chest_cards[card].text);
+            community_chest_cards[card].func(gs_p);
             break;
         case CHANCE_T:
             card = rand() % num_chance_cards;
-            printf("%s\n",community_chest_cards[card].text);
+            printf("%s\n",chance_cards[card].text);
+            chance_cards[card].func(gs_p);
             break;
         case INCOME_TAX_T:
             printf("You may pay either 10%% or $200\n");
-            assets = calculate_assets(p_p);
-            ten_percent = assets/10;
+            ten_percent = p_p->taxable_assets/10;
             least_amount = min(200,ten_percent);
             indebt_current_player( &(gs_p->turn), bank, least_amount);
             break;
@@ -511,12 +543,67 @@ char action_strings[][40] = {
     "Use get-out-of-jail-free card"
 };
 
+void print_game_state(Game_state_t * gs_p) {
+
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    char * p_name = p_p->name;
+    int i;
+    int rdc = gs_p->turn.roll_double_count;
+    int name_len;
+    char last_char;
+
+    printf("%s\n",equals);
+    name_len = strlen(p_name);
+    last_char = p_name[name_len-1];
+    if(last_char == 's')
+        printf("It is now %s' turn\n",p_name);
+    else
+        printf("It is now %s's turn\n",p_name);
+    printf("%s\n",equals);
+
+    if(p_p->in_jail) {
+        printf("You are currently in jail.\n");
+        printf("You have tried to roll for doubles %d times.\n", p_p->rolls_in_jail);
+    }
+    if(p_p->num_get_out_of_jail_free)
+        printf("You have %d get-out-of-jail-free cards.\n",p_p->num_get_out_of_jail_free);
+    if(gs_p->turn.has_rolled)
+        printf("You have rolled.\n");
+    if(rdc > 0)
+        printf("You have rolled doubles %d times consecutively.\n", rdc);
+    if(gs_p->turn.in_debt)
+        printf("You are $%d in debt.\n",gs_p->turn.debt_total);
+    if(gs_p->turn.on_unowned)
+        printf("You are currently on an unowned property.\n");
+
+    printf("Assets:\n");
+    printf("$%d cash on hand\n",p_p->cash);
+    printf("Properties: \n");
+
+    for(i=0; i<NUM_LOC; i++) {
+        if(p_p->property[i]) {
+            int num_houses = locations[i].ownership.num_houses;
+            printf("    %s (MV=$%d)",locations[i].name,locations[i].mortgage_value);
+            if(locations[i].ownership.mortgaged)
+                printf("[MORTGAGED]\n");
+            else if(num_houses > 0)
+                printf("with %d houses\n", num_houses);
+            else if(locations[i].ownership.hotel)
+                printf("with a hotel\n");
+            else
+                printf("\n");
+        }
+    }
+
+    printf("You total liquid assets sum to: $%d\n",p_p->liquid_assets);
+}
+
 void game_iter(Game_state_t * gs_p) {
 
     int p_i = gs_p->turn.player_index;
     Player_t * p_p = &(gs_p->players[p_i]);
 
-    int in_jail = p_p->in_jail;
 
     int i;
     int end_of_turn = 0;
@@ -540,38 +627,24 @@ void game_iter(Game_state_t * gs_p) {
         Location_t * l_p;
         int price, sufficient_funds;
 
+        print_game_state(gs_p);
+
         if(p_p->liquid_assets < gs_p->turn.debt_total) {
-            printf("\n\n\n\n\n\n\n\n\n\n");
-            printf("Your total liquid assets: %d\n",p_p->liquid_assets);
-            printf("Total debt: %d\n",gs_p->turn.debt_total);
-            printf("YOU ARE BANKRUPT!!!!\n");
+            declare_bankruptcy(gs_p);
             end_of_turn = 1;
             continue;
-            /* QUESTION: can you go bankrupt with debts to the bank as well as other players? */
-
-            /* in any case: */
-                /* must sell all houses and hotels */
-
-            /* if you owe the bank: */
-                /* must auction off all property */
-
-            /* if you owe other player: */
-                /* turn over all cash and titles to other player */
-
-            /* if you owe multiple players... divide equally? */
-
         }
 
-        if(in_jail) {
+        if(p_p->in_jail) {
             actions_allowed[TRADE]          = 1;
             actions_allowed[MANAGE]         = 1;
             actions_allowed[ROLL]           = 0;
             actions_allowed[BUY]            = 0;
             actions_allowed[AUCTION]        = 0;
             actions_allowed[PAY_DEBT]       = 0;
-            actions_allowed[END]            = gs_p->turn.has_rolled ? 1 : 0;
-            actions_allowed[JAIL_ROLL]      = gs_p->turn.has_rolled ? 0 : 1;
-            actions_allowed[BAIL]           = gs_p->turn.has_rolled ? 0 : 1;
+            actions_allowed[END]            =  gs_p->turn.has_rolled ? 1 : 0;
+            actions_allowed[JAIL_ROLL]      = !gs_p->turn.has_rolled ? 1 : 0;
+            actions_allowed[BAIL]           = !gs_p->turn.has_rolled ? 1 : 0;
             actions_allowed[GET_OUT_FREE]   = (!gs_p->turn.has_rolled  && p_p->num_get_out_of_jail_free > 0) ? 1 : 0;
         }
         else {
@@ -629,9 +702,18 @@ ask_for_choice:
                 break;
             case ROLL:
                 do_roll(gs_p);
-                /* can end up in jail as a result of the roll */
-                if(p_p->in_jail)
+                if(p_p->in_jail) {
+                    printf("TODO: make sure debts are paid before entering jail\n");
                     end_of_turn = 1;
+/*                    attempt_pay_off_debts();
+                    if(gs_p->turn.debt_total < p_p->cash) {
+                        pay_off_debts(gs_p);
+                         end_of_turn = 1;
+                    }
+                    else {
+                        declare_bankruptcy();
+                    } */
+                }
                 break;
             case BUY:
                 sufficient_funds = (p_p->cash >= price);
@@ -640,8 +722,10 @@ ask_for_choice:
                     make_player_owner(p_p, l_i);
                     gs_p->turn.on_unowned = 0;
                 }
-                else
+                else {
                     printf("INSUFFICIENT FUNDS TO MAKE PURCHASE\n");
+                    pause();
+                }
                 break;
             case AUCTION:
                 do_auction(gs_p, l_i);
@@ -650,23 +734,26 @@ ask_for_choice:
             case PAY_DEBT:
                 if(gs_p->turn.debt_total < p_p->cash)
                     pay_off_debts(gs_p);
+                else {
+                    printf("YOU DO NOT HAVE ENOUGH CASH TO PAY YOUR DEBTS\n");
+                    pause();
+                }
                 break;
             case END:
                 end_of_turn = 1;
                 break;
             case JAIL_ROLL:
-                roll_dice(gs_p);
-                if(gs_p->turn.doubles) {
-                    p_p->in_jail = 0;
-                }
+                do_roll(gs_p);
                 break;
             case BAIL:
                 if(p_p->cash > BAIL_COST) {
                     debit_player(p_p, BAIL_COST);
                     p_p->in_jail = 0;
                 }
-                else
+                else {
                     printf("YOU CANNOT AFFORD BAIL\n");
+                    pause();
+                }
                 break;
             case GET_OUT_FREE:
                 p_p->in_jail = 0;
@@ -678,6 +765,48 @@ ask_for_choice:
 
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     advance_turn(gs_p);
+}
+
+void declare_bankruptcy(Game_state_t * gs_p) {
+
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+
+    printf("\n\n\n\n\n\n\n\n\n\n");
+    printf("Your total liquid assets: %d\n",p_p->liquid_assets);
+    printf("Total debt: %d\n",gs_p->turn.debt_total);
+    printf("YOU ARE BANKRUPT!!!!\n");
+    pause();
+
+    p_p->bankrupt = 1;
+    gs_p->num_active_players--;
+
+    if(gs_p->num_active_players == 1) {
+        int i;
+        gs_p->game_over = 1;
+
+        for(i = 0; i < gs_p->num_players; i++) {
+            if(!gs_p->players[i].bankrupt) {
+                gs_p->winner = &(gs_p->players[i]);
+                break;
+            }
+        }
+    }
+
+    /* QUESTION: can you go bankrupt with debts to the bank as well as other players? */
+
+    /* in any case: */
+        /* must sell all houses and hotels */
+
+    /* if you owe the bank: */
+        /* must auction off all property */
+
+    /* if you owe other player: */
+        /* turn over all cash and titles to other player */
+
+    /* if you owe multiple players... divide equally? */
+
+
 }
 
 void liquidate_assets() {
@@ -773,6 +902,7 @@ void unmortgage_properties(Player_t * p_p) {
         }
         else {
             printf("YOU DO NO HAVE SUFFICIENT FUNDS TO UNMORTGAGE THAT PROPERTY\n");
+            pause();
         }
             
     }
@@ -828,6 +958,7 @@ void mortgage_properties(Player_t * p_p) {
         locations[to_mortgage].ownership.mortgaged = 1;
 
         printf("%s has been mortgaged.\n",locations[to_mortgage].name);
+        pause();
     }
 
 }
@@ -890,16 +1021,20 @@ void sell_houses(Player_t * p_p) {
 
         if(locations[to_sell].ownership.num_houses == 0) {
             printf("\n\n\nTHIS PROPERTY HAS NO HOUSES TO SELL\n\n\n");
+            pause();
             continue;
         }
 
         if(locations[to_sell].ownership.num_houses < max_houses) {
             printf("You must sell evenly.\n");
+            pause();
             continue;
         }
 
         house_price = locations[to_sell].house_price;
         credit_player(p_p, house_price*0.5);
+        p_p->liquid_assets -= house_price/2;
+        p_p->taxable_assets -= house_price;
         locations[to_sell].ownership.num_houses--;
         /* TODO: update player's total assets */
     }
@@ -1012,11 +1147,14 @@ choose_monopoly:
 
         if(p_p->cash > house_price) {
             debit_player(p_p, house_price);
+            p_p->liquid_assets += house_price/2;
+            p_p->taxable_assets += house_price;
             locations[to_buy_p].ownership.num_houses++;
             /* TODO: add house to player's total assets calculation */
         }
         else {
             printf("YOU DO NO HAVE SUFFICIENT FUNDS TO PURCHASE A HOUSE FOR THAT PROPERTY\n");
+            pause();
             continue;
         }
 
@@ -1091,6 +1229,7 @@ void do_auction(Game_state_t * gs_p, int l_i) {
         }
         else if(!sufficient_funds) {
             printf("YOU DO NOT HAVE SUFFICIENT FUNDS TO MAKE SUCH A BID\n");
+            pause();
         }
     }
 
@@ -1108,6 +1247,8 @@ void make_player_owner(Player_t * p_p, int l_i) {
     if(l_p->ownership.owned) {
         Player_t * old_owner = l_p->owner;
         old_owner->property[l_i] = 0;
+        old_owner->liquid_assets -= l_p->mortgage_value;
+        old_owner->taxable_assets -= l_p->price;
         /* TODO: create assertion for 0 houses*/
     }
 
@@ -1115,6 +1256,8 @@ void make_player_owner(Player_t * p_p, int l_i) {
     p_p->property[l_i] = 1;
     l_p->ownership.owned = 1;
     l_p->owner = p_p;
+    p_p->liquid_assets += l_p->mortgage_value;
+    p_p->taxable_assets += l_p->price;
     printf("%s, you now own %s\n", p_p->name, l_p->name);
     if(monopoly_owner(l_p) == p_p)
         printf("you now own a monopoly!\n");
@@ -1126,39 +1269,50 @@ void enter_jail(Player_t * p_p) {
 /*    p_p->roll_double_count = 0; */
 }
 
+/*
+   Does the following:
+   * rolls dice
+   * keeps track of number of times player has rolled doubles consecutively
+   * places player in jail if rolled doubles three times consecutively
+   * advances the player's token (if they don't enter jail due to doubles)
+   * invokes do_location_action, which does the appropriate thing for the given location
+ */
 void do_roll(Game_state_t * gs_p) {
 
     int p_i = gs_p->turn.player_index;
     Player_t * p_p = &(gs_p->players[p_i]);
     Location_t * l_p;
 
-    /* roll dice */
     roll_dice(gs_p);
 
-    /* TODO: should this be set in roll_dice instead? */
-    gs_p->turn.has_rolled = 1;
-
-/*    printf("die 1: %d\ndie 2: %d\n",die1,die2); */
-
-    if(gs_p->turn.doubles) {
-        printf("YOU ROLLED DOUBLES\n");
-/*        p_p->roll_double_count++; */
-        gs_p->turn.roll_double_count++;
+    if(p_p->in_jail) {
+        if(gs_p->turn.doubles) {
+            printf("You rolled doubles and are out of jail!\n");
+            p_p->in_jail = 0;
+            gs_p->turn.doubles = 0; /* don't want to allow player to use these doubles */
+        }
+        else 
+            return;
     }
     else {
-        p_p->roll_double_count = 0;
-        gs_p->turn.roll_double_count = 0;
+        if(gs_p->turn.doubles) {
+            printf("YOU ROLLED DOUBLES\n");
+            pause();
+            gs_p->turn.roll_double_count++;
+        }
+        else {
+            gs_p->turn.roll_double_count = 0;
+        }
+
+        /* if roll double count is 3, go to jail, end turn */
+        if(gs_p->turn.roll_double_count == 3) {
+            printf("YOU ROLLED DOUBLES THREE TIMES IN A ROW. GO TO JAIL!\n");
+            pause();
+            enter_jail(p_p);
+            return;
+        }
     }
 
-    /* if roll double count is 3, go to jail, end turn */
-/*    if(p_p->roll_double_count == 3) { */
-    if(gs_p->turn.roll_double_count == 3) {
-        printf("you rolled doubles three times in a row. you go to jail.\n");
-        enter_jail(p_p);
-        return;
-    }
-
-    /* advance token; handles rolling doubles */
     advance_token(p_p,gs_p->turn.die1,gs_p->turn.die2);
 
     l_p = &(locations[p_p->location_index]);
@@ -1393,6 +1547,8 @@ void game_loop(Game_state_t * gs_p) {
     while(!gs_p->game_over) {
         game_iter(gs_p);
     }
+
+    printf("Game over! The winner is: %s\n",gs_p->winner->name);
 
 }
 

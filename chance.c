@@ -1,4 +1,4 @@
-#include "chance.h"
+#include "monopoly.h"
 
 int num_chance_cards = 17;
 Card_t chance_cards[] = {
@@ -21,50 +21,90 @@ Card_t chance_cards[] = {
     {"You have won a crossword competition - collect $100.",                                                                                                                &crossword            }
 };
 
-void c_advance_to_go() {
+void c_advance_to_go(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    p_p->location_index = GO_L;
+    credit_player(p_p, 200);
 }
 
-void advance_to_illinois() {
+void advance_to_illinois(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    p_p->location_index = ILL_L;
 }
 
-void advance_to_utility() {
+void advance_to_utility(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    int l_i;
+    int owned;
+    int dice_sum;
+    if(p_p->location_index < ELE_L) {
+        printf("Advancing to the Electric Company\n");
+        l_i = p_p->location_index = ELE_L;
+    }
+    else {
+        printf("Advancing to Water Works\n");
+        l_i = p_p->location_index = H2O_L;
+    }
+    owned = locations[l_i].ownership.owned;
+    if(owned) {
+        roll_dice(gs_p);
+        dice_sum = gs_p->turn.die1 + gs_p->turn.die2;
+        debit_player(p_p, 10*dice_sum);
+    }
+    else {
+        printf("Would you like to buy the utility? ");
+        fgets(buffer,MAXCHARS, stdin);
+        if(strncmp(buffer,"y",1) == 0) {
+            printf("TODO\n");
+        }
+    }
 }
 
-void advance_to_railroad() {
+void advance_to_railroad(Game_state_t * gs_p) {
 }
 
-void advance_to_stcharles() {
+void advance_to_stcharles(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    p_p->location_index = STC_L;
+    /* TODO: do_location_action? */
 }
 
-void bank_pays_dividend() {
+void bank_pays_dividend(Game_state_t * gs_p) {
+    int p_i = gs_p->turn.player_index;
+    Player_t * p_p = &(gs_p->players[p_i]);
+    credit_player(p_p,50);
 }
 
-void c_get_out_of_jail() {
+void c_get_out_of_jail(Game_state_t * gs_p) {
 }
 
-void go_back_three() {
+void go_back_three(Game_state_t * gs_p) {
 }
 
-void c_go_to_jail() {
+void c_go_to_jail(Game_state_t * gs_p) {
 }
 
-void general_repairs() {
+void general_repairs(Game_state_t * gs_p) {
 }
 
-void poor_tax() {
+void poor_tax(Game_state_t * gs_p) {
 }
 
-void reading_railroad() {
+void reading_railroad(Game_state_t * gs_p) {
 }
 
-void advance_to_boardwalk() {
+void advance_to_boardwalk(Game_state_t * gs_p) {
 }
 
-void chairman() {
+void chairman(Game_state_t * gs_p) {
 }
 
-void building_loan() {
+void building_loan(Game_state_t * gs_p) {
 }
 
-void crossword() {
+void crossword(Game_state_t * gs_p) {
 }
