@@ -21,7 +21,7 @@ clean:
 ################
 
 CC      = gcc
-CFLAGS  = -c -Wall -ansi -pedantic
+CFLAGS  = -ggdb -c -Wall -ansi -pedantic
 LDFLAGS =
 
 OBJECTS = $(SOURCES:.c=.o)
